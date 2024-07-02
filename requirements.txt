@@ -1,2 +1,3 @@
+# tcod and numpy dependencies
 tcod>=11.13
 numpy>=1.18
