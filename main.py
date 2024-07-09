@@ -2,12 +2,15 @@
 
 #!/usr/bin/env python3
 import copy
+import traceback
+
 import tcod
 
 import color
 from engine import Engine
 import entity_factories
 from procgen import generate_dungeon
+
 
 def main() -> None:
 
@@ -22,6 +25,7 @@ def main() -> None:
     max_rooms = 30
 
     max_monsters_per_room = 2
+    max_items_per_room = 2
 
     tileset = tcod.tileset.load_tilesheet(
         "sprites.png", 32, 8, tcod.tileset.CHARMAP_TCOD
@@ -30,16 +34,17 @@ def main() -> None:
     # Can't player.spawn, because spawn requires a GameMap
     player = copy.deepcopy(entity_factories.player)
 
-    engine = Engine(player = player)
+    engine = Engine(player=player)
 
     engine.game_map = generate_dungeon(
-        max_rooms = max_rooms,
-        room_min_size = room_min_size,
-        room_max_size = room_max_size,
-        map_width = map_width,
-        map_height = map_height,
-        max_monsters_per_room = max_monsters_per_room,
-        engine = engine,
+        max_rooms=max_rooms,
+        room_min_size=room_min_size,
+        room_max_size=room_max_size,
+        map_width=map_width,
+        map_height=map_height,
+        max_monsters_per_room=max_monsters_per_room,
+        max_items_per_room=max_items_per_room,
+        engine=engine,
     )
     engine.update_fov()
 
@@ -50,17 +55,26 @@ def main() -> None:
     with tcod.context.new_terminal(
         screen_width,
         screen_height,
-        tileset = tileset,
-        title = "Untitled Roguelike",
-        vsync = True,
+        tileset=tileset,
+        title="Untitled Roguelike",
+        vsync=True,
     ) as context:
-        root_console = tcod.console.Console(screen_width, screen_height, order = "F")
+        root_console = tcod.console.Console(screen_width, screen_height, order="F")
 
         while True:
             root_console.clear()
-            engine.event_handler.on_render(console = root_console)
+            engine.event_handler.on_render(console=root_console)
             context.present(root_console)
-            engine.event_handler.handle_events(context)
+
+            try:
+                for event in tcod.event.wait():
+                    context.convert_event(event)
+                    engine.event_handler.handle_events(event)
+            except Exception:  # Handle in-game exceptions.
+                traceback.print_exc()  # Print error to stderr.
+                # Then print the error to the message log.
+                engine.message_log.add_message(traceback.format_exc(), color.error)
+
 
 # Runs main when explicitly running the script
 if __name__ == "__main__":

@@ -6,14 +6,12 @@ import numpy as np  # type: ignore
 import tcod
 
 from actions import Action, MeleeAction, MovementAction, WaitAction
-from components.base_component import BaseComponent
 
 if TYPE_CHECKING:
     from entity import Actor
 
 
-class BaseAI(Action, BaseComponent):
-    entity: Actor
+class BaseAI(Action):
 
     def perform(self) -> None:
         raise NotImplementedError()
@@ -68,7 +66,9 @@ class HostileEnemy(BaseAI):
         if self.path:
             dest_x, dest_y = self.path.pop(0)
             return MovementAction(
-                self.entity, dest_x - self.entity.x, dest_y - self.entity.y,
+                self.entity,
+                dest_x - self.entity.x,
+                dest_y - self.entity.y,
             ).perform()
 
         return WaitAction(self.entity).perform()
