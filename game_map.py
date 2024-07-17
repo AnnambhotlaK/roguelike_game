@@ -101,6 +101,7 @@ class GameMap:
                     x=entity.x, y=entity.y, string=entity.char, fg=entity.color
                 )
 
+
 class GameWorld:
     """
     Holds the settings for the GameMap, and generates new maps when moving down the stairs.

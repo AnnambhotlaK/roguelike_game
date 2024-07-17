@@ -1,44 +1,44 @@
 from components.ai import HostileEnemy
-from components import consumable
+from components import consumable, equippable
+from components.equipment import Equipment
 from components.fighter import Fighter
 from components.inventory import Inventory
 from components.level import Level
 from entity import Actor, Item
 
-# The user-controlled player entity
 player = Actor(
     char="@",
     color=(255, 255, 255),
     name="Player",
     ai_cls=HostileEnemy,
-    fighter=Fighter(hp=30, defense=2, power=5),
+    equipment=Equipment(),
+    fighter=Fighter(hp=30, base_defense=1, base_power=2),
     inventory=Inventory(capacity=26),
-    level=Level(level_up_base = 200),
+    level=Level(level_up_base=200),
 )
 
-# Weaker enemy, high chance of spawning
 orc = Actor(
     char="o",
     color=(63, 127, 63),
     name="Orc",
     ai_cls=HostileEnemy,
-    fighter=Fighter(hp=10, defense=0, power=3),
+    equipment=Equipment(),
+    fighter=Fighter(hp=10, base_defense=0, base_power=3),
     inventory=Inventory(capacity=0),
     level=Level(xp_given=35),
 )
 
-# Stronger enemy, low chance of spawning
 troll = Actor(
     char="T",
     color=(0, 127, 0),
     name="Troll",
     ai_cls=HostileEnemy,
-    fighter=Fighter(hp=16, defense=1, power=4),
+    equipment=Equipment(),
+    fighter=Fighter(hp=16, base_defense=1, base_power=4),
     inventory=Inventory(capacity=0),
-    level=Level(xp_given = 100),
+    level=Level(xp_given=100),
 )
 
-# Simple healing item
 health_potion = Item(
     char="!",
     color=(127, 0, 255),
@@ -46,15 +46,13 @@ health_potion = Item(
     consumable=consumable.HealingConsumable(amount=4),
 )
 
-# Simple damage-dealing ranged consumable
 lightning_scroll = Item(
     char="~",
     color=(255, 255, 0),
     name="Lightning Scroll",
-    consumable=consumable.LightningDamageConsumable(damage = 20, maximum_range = 5)
+    consumable=consumable.LightningDamageConsumable(damage=20, maximum_range=5),
 )
 
-# Confusion scroll to randomize enemy movement
 confusion_scroll = Item(
     char="~",
     color=(207, 63, 255),
@@ -62,10 +60,27 @@ confusion_scroll = Item(
     consumable=consumable.ConfusionConsumable(number_of_turns=10),
 )
 
-# Simple area-of-effect damage-dealing consumable
 fireball_scroll = Item(
-   char="~",
-   color=(255, 0, 0),
-   name="Fireball Scroll",
-   consumable=consumable.FireballDamageConsumable(damage=12, radius=3),
+    char="~",
+    color=(255, 0, 0),
+    name="Fireball Scroll",
+    consumable=consumable.FireballDamageConsumable(damage=12, radius=3),
+)
+
+# Weaker weapon option
+dagger = Item(
+    char="/", color=(0, 191, 255), name="Dagger", equippable=equippable.Dagger()
+)
+
+sword = Item(char="/", color=(0, 191, 255), name="Sword", equippable=equippable.Sword())
+
+leather_armor = Item(
+    char="[",
+    color=(139, 69, 19),
+    name="Leather Armor",
+    equippable=equippable.LeatherArmor(),
+)
+
+chain_mail = Item(
+    char="[", color=(139, 69, 19), name="Chain Mail", equippable=equippable.ChainMail()
 )

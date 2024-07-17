@@ -30,8 +30,8 @@ max_monsters_by_floor = [
 item_chances: Dict[int, List[Tuple[Entity, int]]] = {
     0: [(entity_factories.health_potion, 35)],
     2: [(entity_factories.confusion_scroll, 10)],
-    4: [(entity_factories.lightning_scroll, 25)],
-    6: [(entity_factories.fireball_scroll, 25)],
+    4: [(entity_factories.lightning_scroll, 25), (entity_factories.sword, 5)],
+    6: [(entity_factories.fireball_scroll, 25), (entity_factories.chain_mail, 15)],
 }
 
 enemy_chances: Dict[int, List[Tuple[Entity, int]]] = {
@@ -40,6 +40,7 @@ enemy_chances: Dict[int, List[Tuple[Entity, int]]] = {
     5: [(entity_factories.troll, 30)],
     7: [(entity_factories.troll, 60)],
 }
+
 
 def get_max_value_for_floor(
     max_value_by_floor: List[Tuple[int, int]], floor: int
@@ -51,8 +52,9 @@ def get_max_value_for_floor(
             break
         else:
             current_value = value
-    
+
     return current_value
+
 
 def get_entities_at_random(
     weighted_chances_by_floor: Dict[int, List[Tuple[Entity, int]]],
@@ -70,15 +72,18 @@ def get_entities_at_random(
                 weighted_chance = value[1]
 
                 entity_weighted_chances[entity] = weighted_chance
-    
+
     entities = list(entity_weighted_chances.keys())
     entity_weighted_chance_values = list(entity_weighted_chances.values())
-    
+
     chosen_entities = random.choices(
-        entities, weights=entity_weighted_chance_values, k=number_of_entities,
+        entities,
+        weights=entity_weighted_chance_values,
+        k=number_of_entities,
     )
 
     return chosen_entities
+
 
 class RectangularRoom:
     def __init__(self, x: int, y: int, width: int, height: int):
@@ -114,7 +119,9 @@ class RectangularRoom:
 
 
 def place_entities(
-    room: RectangularRoom, dungeon: GameMap, floor_number: int,
+    room: RectangularRoom,
+    dungeon: GameMap,
+    floor_number: int,
 ) -> None:
     number_of_monsters = random.randint(
         0, get_max_value_for_floor(max_monsters_by_floor, floor_number)
@@ -136,6 +143,7 @@ def place_entities(
 
         if not any(entity.x == x and entity.y == y for entity in dungeon.entities):
             entity.spawn(dungeon, x, y)
+
 
 def tunnel_between(
     start: Tuple[int, int], end: Tuple[int, int]
@@ -202,7 +210,7 @@ def generate_dungeon(
             # Dig out a tunner between this room and the previous.
             for x, y in tunnel_between(rooms[-1].center, new_room.center):
                 dungeon.tiles[x, y] = tile_types.floor
-            
+
             center_of_last_room = new_room.center
 
         place_entities(new_room, dungeon, engine.game_world.current_floor)

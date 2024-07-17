@@ -67,7 +67,7 @@ class Engine:
         render_functions.render_names_at_mouse_location(
             console=console, x=21, y=44, engine=self
         )
-    
+
     def save_as(self, filename: str) -> None:
         """
         Save this Engine instance as a compressed file.

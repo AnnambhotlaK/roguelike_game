@@ -52,6 +52,7 @@ class ConfusedEnemy(BaseAI):
     A confused enemy will stumble for a given number of turns.
     If an actor occupies a tile it is randomly moving into, it will attack.
     """
+
     def __init__(
         self, entity: Actor, previous_ai: Optional[BaseAI], turns_remaining: int
     ):
@@ -59,7 +60,7 @@ class ConfusedEnemy(BaseAI):
 
         self.previous_ai = previous_ai
         self.turns_remaining = turns_remaining
-    
+
     def perform(self) -> None:
         # Revert the AI back to the original state if the effect has run out.
         if self.turns_remaining <= 0:
@@ -71,14 +72,14 @@ class ConfusedEnemy(BaseAI):
             # Pick a random direction
             direction_x, direction_y = random.choice(
                 [
-                   (-1, -1),  # Northwest
-                   (0, -1),  # North
-                   (1, -1),  # Northeast
-                   (-1, 0),  # West
-                   (1, 0),  # East
-                   (-1, 1),  # Southwest
-                   (0, 1),  # South
-                   (1, 1),  # Southeast
+                    (-1, -1),  # Northwest
+                    (0, -1),  # North
+                    (1, -1),  # Northeast
+                    (-1, 0),  # West
+                    (1, 0),  # East
+                    (-1, 1),  # Southwest
+                    (0, 1),  # South
+                    (1, 1),  # Southeast
                 ]
             )
 
@@ -87,6 +88,8 @@ class ConfusedEnemy(BaseAI):
             # The actor will either try to move or attack in the chosen direction.
             # Its possible the actor will bump into the all, wasting a turn.
             return BumpAction(self.entity, direction_x, direction_y).perform()
+
+
 class HostileEnemy(BaseAI):
     def __init__(self, entity: Actor):
         super().__init__(entity)

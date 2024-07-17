@@ -6,8 +6,8 @@ class Impossible(Exception):
     ex: raise Impossible("Exception message")
     """
 
+
 class QuitWithoutSaving(SystemExit):
     """
     Can be reaised to exit the game without automatically saving.
     """
-
