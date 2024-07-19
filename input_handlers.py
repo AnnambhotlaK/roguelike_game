@@ -73,7 +73,7 @@ MainGameEventHandler will become the active handler.
 class BaseEventHandler(tcod.event.EventDispatch[ActionOrHandler]):
     def handle_events(self, event: tcod.event.Event) -> BaseEventHandler:
         """
-        Handle ane vent and return the next active event handler.
+        Handle an event and return the next active event handler.
         """
         state = self.dispatch(event)
         if isinstance(state, BaseEventHandler):
@@ -119,7 +119,6 @@ class PopupMessage(BaseEventHandler):
         Any key returns to the parent handler.
         """
         return self.parent
-
 
 class EventHandler(BaseEventHandler):
     def __init__(self, engine: Engine):
@@ -232,6 +231,7 @@ class CharacterScreenEventHandler(AskUserEventHandler):
             bg=(0, 0, 0),
         )
 
+        # XP/Level details
         console.print(
             x=x + 1, y=y + 1, string=f"Level: {self.engine.player.level.current_level}"
         )
@@ -244,12 +244,31 @@ class CharacterScreenEventHandler(AskUserEventHandler):
             string=f"XP for next Level: {self.engine.player.level.experience_to_next_level}",
         )
 
+        # Player stats (with equipped gear)
         console.print(
             x=x + 1, y=y + 4, string=f"Attack: {self.engine.player.fighter.power}"
         )
         console.print(
             x=x + 1, y=y + 5, string=f"Defense: {self.engine.player.fighter.defense}"
         )
+
+        # Equipment
+        if self.engine.player.equipment.weapon is not None:
+            console.print(
+                x=x + 1, y=y + 5, string=f"Weapon: {self.engine.player.equipment.weapon.name}"
+            )
+        else:
+            console.print(
+               x=x + 1, y=y + 5, string=f"Weapon: None" 
+            )
+        if self.engine.player.equipment.armor is not None:
+            console.print(
+                x=x + 1, y=y + 5, string=f"Armor: {self.engine.player.equipment.armor.name}"
+            )
+        else:
+            console.print(
+               x=x + 1, y=y + 5, string=f"Armor: None" 
+            )
 
 
 class LevelUpEventHandler(AskUserEventHandler):
@@ -316,7 +335,7 @@ class LevelUpEventHandler(AskUserEventHandler):
         self, event: tcod.event.MouseButtonDown
     ) -> Optional[ActionOrHandler]:
         """
-        Don't allow the player to clickto exit the menu, like normal.
+        Don't allow the player to click to exit the menu, like normal.
         """
         return None
 

@@ -18,6 +18,18 @@ import entity_factories
 from game_map import GameWorld
 import input_handlers
 
+# Multi-line string holding all controls for the player to read
+controls = """Arrow Keys -> Move, Attack, Target
+    Mouse -> Target, Identify Entities
+    Number Keys -> Select Inventory Item
+    G -> Get Item, Equipment
+    I -> Use Item from Inventory or Equip/Unequip
+    D -> Drop Item from Inventory
+    C -> View Character
+    V -> View Message Log History
+    / -> Look at Map
+    Q, Escape -> Save and Quit, Exit Popup"""
+
 # Load the background image
 # And remove alpha channel.
 background_image = tcod.image.load("menu_background.png")[:, :, :3]
@@ -107,7 +119,7 @@ class MainMenu(input_handlers.BaseEventHandler):
 
         menu_width = 24
         for i, text in enumerate(
-            ["[N] Play a new game", "[C] Continue last game", "[Q] Quit"]
+            ["[N] Play a new game", "[C] Continue last game", "[M] Controls", "[Q] Quit"]
         ):
             console.print(
                 console.width // 2,
@@ -134,5 +146,7 @@ class MainMenu(input_handlers.BaseEventHandler):
                 return input_handlers.PopupMessage(self, f"Failed to load save:\n{exc}")
         elif event.sym == tcod.event.KeySym.n:
             return input_handlers.MainGameEventHandler(new_game())
+        elif event.sym == tcod.event.KeySym.m:
+            return input_handlers.PopupMessage(self, f"{controls}")
 
         return None
