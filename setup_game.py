@@ -28,6 +28,7 @@ controls = """Arrow Keys -> Move, Attack, Target
     C -> View Character
     V -> View Message Log History
     / -> Look at Map
+    # -> Descend Floor
     Q, Escape -> Save and Quit, Exit Popup"""
 
 # Load the background image
