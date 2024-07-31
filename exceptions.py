@@ -9,5 +9,5 @@ class Impossible(Exception):
 
 class QuitWithoutSaving(SystemExit):
     """
-    Can be reaised to exit the game without automatically saving.
+    Can be raised to exit the game without automatically saving.
     """

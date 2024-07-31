@@ -13,7 +13,7 @@ class Level(BaseComponent):
 
     def __init__(
         self,
-        current_level: int = 1,
+        current_level: int = 0,
         current_xp: int = 0,
         level_up_base: int = 0,
         level_up_factor: int = 150,
@@ -32,6 +32,10 @@ class Level(BaseComponent):
     @property
     def requires_level_up(self) -> bool:
         return self.current_xp > self.experience_to_next_level
+    
+    @property
+    def requires_new_enhancement(self) -> bool:
+        return ((self.current_level % 3) == 0) & (self.current_level != 0)
 
     def add_xp(self, xp: int) -> None:
         if xp == 0 or self.level_up_base == 0:

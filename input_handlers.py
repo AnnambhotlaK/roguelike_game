@@ -23,12 +23,10 @@ MOVE_KEYS = {
     tcod.event.KeySym.UP: (0, -1),
     tcod.event.KeySym.DOWN: (0, 1),
     tcod.event.KeySym.LEFT: (-1, 0),
-    tcod.event.KeySym.RIGHT: (1, 0)
+    tcod.event.KeySym.RIGHT: (1, 0),
 }
 
-WAIT_KEYS = {
-    tcod.event.KeySym.PERIOD
-}
+WAIT_KEYS = {tcod.event.KeySym.PERIOD}
 
 CONFIRM_KEYS = {
     tcod.event.KeySym.RETURN,
@@ -95,6 +93,7 @@ class PopupMessage(BaseEventHandler):
         """
         return self.parent
 
+
 class EventHandler(BaseEventHandler):
     def __init__(self, engine: Engine):
         self.engine = engine
@@ -113,6 +112,8 @@ class EventHandler(BaseEventHandler):
                 return GameOverEventHandler(self.engine)
             elif self.engine.player.level.requires_level_up:
                 return LevelUpEventHandler(self.engine)
+                # if self.engine.player.level.requires_new_enhancement:
+                # return NewEnhancementEventHandler(self.engine)
             return MainGameEventHandler(self.engine)  # Return to the main handler.
         return self
 
@@ -230,20 +231,20 @@ class CharacterScreenEventHandler(AskUserEventHandler):
         # Equipment
         if self.engine.player.equipment.weapon is not None:
             console.print(
-                x=x + 1, y=y + 5, string=f"Weapon: {self.engine.player.equipment.weapon.name}"
+                x=x + 1,
+                y=y + 5,
+                string=f"Weapon: {self.engine.player.equipment.weapon.name}",
             )
         else:
-            console.print(
-               x=x + 1, y=y + 5, string=f"Weapon: None" 
-            )
+            console.print(x=x + 1, y=y + 5, string=f"Weapon: None")
         if self.engine.player.equipment.armor is not None:
             console.print(
-                x=x + 1, y=y + 5, string=f"Armor: {self.engine.player.equipment.armor.name}"
+                x=x + 1,
+                y=y + 5,
+                string=f"Armor: {self.engine.player.equipment.armor.name}",
             )
         else:
-            console.print(
-               x=x + 1, y=y + 5, string=f"Armor: None" 
-            )
+            console.print(x=x + 1, y=y + 5, string=f"Armor: None")
 
 
 class LevelUpEventHandler(AskUserEventHandler):
@@ -285,6 +286,81 @@ class LevelUpEventHandler(AskUserEventHandler):
             x=x + 1,
             y=6,
             string=f"c) Agility (+1 Defense, from {self.engine.player.fighter.defense})",
+        )
+
+    def ev_keydown(self, event: tcod.event.KeyDown) -> Optional[ActionOrHandler]:
+        player = self.engine.player
+        key = event.sym
+        index = key - tcod.event.KeySym.a
+
+        if 0 <= index <= 2:
+            if index == 0:
+                player.level.increase_max_hp()
+            elif index == 1:
+                player.level.increase_power()
+            else:
+                player.level.increase_defense()
+        else:
+            self.engine.message_log.add_message("Invalid entry.", color.invalid)
+
+            return None
+
+        return super().ev_keydown(event)
+
+    def ev_mousebuttondown(
+        self, event: tcod.event.MouseButtonDown
+    ) -> Optional[ActionOrHandler]:
+        """
+        Don't allow the player to click to exit the menu, like normal.
+        """
+        return None
+
+
+class NewEnhancementEventHandler(AskUserEventHandler):
+    TITLE = "New Enhancement"
+
+    def on_render(self, console: tcod.console.Console) -> None:
+        super().on_render(console)
+
+        if self.engine.player.x <= 30:
+            x = 40
+        else:
+            x = 0
+
+        console.draw_frame(
+            x=x,
+            y=0,
+            width=35,
+            height=8,
+            title=self.TITLE,
+            clear=True,
+            fg=(255, 255, 255),
+            bg=(0, 0, 0),
+        )
+
+        console.print(
+            x=x + 1, y=1, string="Congratulations! You earned a new enhancement!"
+        )
+        console.print(x=x + 1, y=2, string="Select a new enhancement.")
+
+        # TODO:
+        #   Select three random enhancements from the pool of unowned enhancements.
+        #   Assign each to the numbers 0, 1, 2 for selection
+
+        console.print(
+            x=x + 1,
+            y=4,
+            # string= TODO: Random Enhancement,
+        )
+        console.print(
+            x=x + 1,
+            y=5,
+            # string= TODO: Random Enhancement,
+        )
+        console.print(
+            x=x + 1,
+            y=6,
+            # string= TODO: Random Enhancement,
         )
 
     def ev_keydown(self, event: tcod.event.KeyDown) -> Optional[ActionOrHandler]:
