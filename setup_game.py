@@ -22,6 +22,7 @@ import input_handlers
 controls = """Arrow Keys -> Move, Attack, Target
     Mouse -> Target, Identify Entities
     Number Keys -> Select Inventory Item
+    Period -> Pass Turn
     G -> Get Item, Equipment
     I -> Use Item from Inventory or Equip/Unequip
     D -> Drop Item from Inventory
@@ -29,6 +30,7 @@ controls = """Arrow Keys -> Move, Attack, Target
     V -> View Message Log History
     / -> Look at Map
     # -> Descend Floor
+    Return, Enter -> Confirm
     Q, Escape -> Save and Quit, Exit Popup"""
 
 # Load the background image

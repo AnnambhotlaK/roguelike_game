@@ -20,17 +20,20 @@ def save_game(handler: input_handlers.BaseEventHandler, filename: str) -> None:
         handler.engine.save_as(filename)
         print("Game saved.")
 
+def toggle_fullscreen(context: tcod.context.Context) -> None:
+    """Toggle a context window between fullscreen and windowed modes."""
+    window = context.sdl_window
+    if not window:
+        return
+    if window.fullscreen:
+        window.fullscreen = False
+    else:
+        window.fullscreen = tcod.sdl.video.WindowFlags.FULLSCREEN_DESKTOP
 
 def main() -> None:
 
     screen_width = 80
     screen_height = 50
-
-    """
-    tileset = tcod.tileset.load_tilesheet(
-        "sprites.png", 32, 8, tcod.tileset.CHARMAP_TCOD
-    )
-    """
 
     tileset = tcod.tileset.load_tilesheet(
         "8x8sprites.png", 16, 16, tcod.tileset.CHARMAP_CP437
@@ -38,13 +41,20 @@ def main() -> None:
 
     handler: input_handlers.BaseEventHandler = setup_game.MainMenu()
 
-    with tcod.context.new_terminal(
-        screen_width,
-        screen_height,
+    with tcod.context.new(
+        x=None,
+        y=None,
+        width=screen_width,
+        height=screen_height,
+        columns=None,
+        rows=None,
+        renderer=None,
         tileset=tileset,
-        title="Untitled Roguelike",
         vsync=True,
+        sdl_window_flags=tcod.context.SDL_WINDOW_FULLSCREEN_DESKTOP,
+        title="Untitled Roguelike",
     ) as context:
+
         root_console = tcod.console.Console(screen_width, screen_height, order="F")
 
         try:
