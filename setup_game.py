@@ -11,6 +11,7 @@ import traceback
 from typing import Optional
 
 import tcod
+from tcod import libtcodpy
 
 import color
 from engine import Engine
@@ -110,14 +111,14 @@ class MainMenu(input_handlers.BaseEventHandler):
             console.height // 2 - 4,
             "UNTITLED ROGUELIKE",
             fg=color.menu_title,
-            alignment=tcod.CENTER,
+            alignment=libtcodpy.CENTER,
         )
         console.print(
             console.width // 2,
             console.height - 2,
             "By Kishore Annambhotla",
             fg=color.menu_title,
-            alignment=tcod.CENTER,
+            alignment=libtcodpy.CENTER,
         )
 
         menu_width = 24
@@ -130,8 +131,8 @@ class MainMenu(input_handlers.BaseEventHandler):
                 text.ljust(menu_width),
                 fg=color.menu_text,
                 bg=color.black,
-                alignment=tcod.CENTER,
-                bg_blend=tcod.BKGND_ALPHA(64),
+                alignment=libtcodpy.CENTER,
+                bg_blend=libtcodpy.BKGND_ALPHA(64),
             )
 
     def ev_keydown(
