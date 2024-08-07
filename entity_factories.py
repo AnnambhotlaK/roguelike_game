@@ -6,16 +6,29 @@ from components.inventory import Inventory
 from components.level import Level
 from entity import Actor, Item
 
-player = Actor(
+knight = Actor(
     char="@",
     color=(255, 255, 255),
-    name="Player",
+    name="Knight",
     ai_cls=HostileEnemy,
     equipment=Equipment(),
     fighter=Fighter(hp=30, base_defense=1, base_power=2),
     inventory=Inventory(capacity=26),
     level=Level(level_up_base=200),
 )
+
+rogue = Actor(
+    char="@",
+    color=(120, 120, 120),
+    name="Rogue",
+    ai_cls=HostileEnemy,
+    equipment=Equipment(),
+    fighter=Fighter(hp=25, base_defense=1, base_power=3),
+    inventory=Inventory(capacity=26),
+    level=Level(level_up_base=200),
+)
+
+player_list = [knight, rogue]
 
 orc = Actor(
     char="o",

@@ -7,6 +7,7 @@ from __future__ import annotations
 import copy
 import lzma
 import pickle
+from random import randint
 import traceback
 from typing import Optional
 
@@ -50,7 +51,12 @@ def new_game() -> Engine:
     room_min_size = 6
     max_rooms = 30
 
-    player = copy.deepcopy(entity_factories.player)
+    # Makes a random character for each game
+    # TODO: Create an input handler to have the user select their character on each new game
+    # return CharacterSelectHandler(....)
+    player = copy.deepcopy(
+        entity_factories.player_list[randint(0, len(entity_factories.player_list) - 1)]
+    )
 
     engine = Engine(player=player)
 
@@ -123,7 +129,12 @@ class MainMenu(input_handlers.BaseEventHandler):
 
         menu_width = 24
         for i, text in enumerate(
-            ["[N] Play a new game", "[C] Continue last game", "[M] Controls", "[Q] Quit"]
+            [
+                "[N] Play a new game",
+                "[C] Continue last game",
+                "[M] Controls",
+                "[Q] Quit",
+            ]
         ):
             console.print(
                 console.width // 2,
