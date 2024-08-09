@@ -39,7 +39,6 @@ controls = """Arrow Keys -> Move, Attack, Target
 # And remove alpha channel.
 background_image = tcod.image.load("menu_background.png")[:, :, :3]
 
-
 def new_game() -> Engine:
     """
     Return a new game session as an Engine instance.
@@ -52,8 +51,6 @@ def new_game() -> Engine:
     max_rooms = 30
 
     # Makes a random character for each game
-    # TODO: Create an input handler to have the user select their character on each new game
-    # return CharacterSelectHandler(....)
     player = copy.deepcopy(
         entity_factories.player_list[randint(0, len(entity_factories.player_list) - 1)]
     )

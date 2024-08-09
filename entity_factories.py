@@ -8,7 +8,7 @@ from entity import Actor, Item
 
 knight = Actor(
     char="@",
-    color=(255, 255, 255),
+    color=(255, 255, 255), # White
     name="Knight",
     ai_cls=HostileEnemy,
     equipment=Equipment(),
@@ -19,7 +19,7 @@ knight = Actor(
 
 rogue = Actor(
     char="@",
-    color=(120, 120, 120),
+    color=(3, 252, 48), # Green
     name="Rogue",
     ai_cls=HostileEnemy,
     equipment=Equipment(),
@@ -28,7 +28,18 @@ rogue = Actor(
     level=Level(level_up_base=200),
 )
 
-player_list = [knight, rogue]
+strongman = Actor(
+    char="@",
+    color=(38, 0, 255), # Blue
+    name="Strongman",
+    ai_cls=HostileEnemy,
+    equipment=Equipment(),
+    fighter=Fighter(hp=40, base_defense=0, base_power=2),
+    inventory=Inventory(capacity=26),
+    level=Level(level_up_base=200)
+)
+
+player_list = [knight, rogue, strongman]
 
 orc = Actor(
     char="o",
