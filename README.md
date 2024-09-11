@@ -1,7 +1,7 @@
 # Roguelike Game
 
 ## Description
-This game is a project of personal interest in video game development. I relied on the "Yet Another Roguelike Tutorial" guide in order to create this game, which extensively utilizes Python and the TCOD library. The game features a dungeon-crawling protagonist who battles various foes through endless floors. On each floor, players are put in a procedurally-generated map and must equip gear, use spells, and upgrade their character in order to progress. The game features a compartmentalized user interface, as well as a "save-upon-close" so players may enjoy the game in small bursts.
+This game is a project of personal interest in video game development. I relied on the "Yet Another Roguelike Tutorial" guide in order to create this game, which extensively utilizes Python and the TCOD library. The game features a dungeon-crawling protagonist who battles various foes through endless floors. On each floor, players are put in a procedurally-generated map and must equip gear, use spells, and upgrade their character in order to progress. The game features a compartmentalized user interface, as well as a "save-upon-close" system so players may enjoy the game in small bursts.
 
 ## Getting Started
 
